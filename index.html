@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>GitHub emoji</title>
+	</head>
+	
+	<body>
+		<h1>Github Emoji</h1>
+		<div>
+			<p>You can use these emoji in GitHub by adding a colon before and after the name, like <span style="font-weight: bold;">:apple:</span></p>
+			<p>Make sure that you can access api.github.com and github.githubassets.com</p>
+		</div>
+		<div id="emoji">
+			<!-- 
+			<div style="display: inline-block; margin-right: 10px;">
+				<div>
+					<img src="https://github.githubassets.com/images/icons/emoji/unicode/1f44d.png?v8" style="max-height: 64px;">
+				</div>
+				<div align="center">
+					<span>+1</span>
+				</div>
+			</div>
+			<div style="display: inline-block;">
+				<div>
+					<img src="https://github.githubassets.com/images/icons/emoji/unicode/1f44e.png?v8" style="max-height: 64px;">
+				</div>
+				<div align="center">
+					<span>-1</span>
+				</div>
+			</div>
+			   -->
+		</div>
+	</body>
+	<script type="text/javascript">
+		
+		function emojiGet () {
+			let xhr = new XMLHttpRequest();
+			xhr.open("GET","https://api.github.com/emojis",true)
+			xhr.setRequestHeader("Accept","application/vnd.github.v3+json")
+			xhr.responseType = "json"
+			xhr.onreadystatechange = function () {
+				if(xhr.readyState == XMLHttpRequest.DONE && xhr.status == 200){
+					console.log("收到了emoji")
+					emojiWrite(xhr.response)
+					
+				} else if(xhr.readyState == XMLHttpRequest.DONE ) {
+					console.log("没有收到emoji")
+				}
+			}
+			xhr.send()
+		}
+		function emojiWrite (resp) {
+			let divEmojis = document.getElementById("emoji")
+			for(let k in resp) {
+				
+				let divOneEmoji = document.createElement("div")
+				divOneEmoji.style.display = "inline-block"
+				divOneEmoji.style.marginRight = "10px"
+				
+				// emoji image
+				let divImg = document.createElement("div")
+				divImg.align = "center"
+				let img = document.createElement("img")
+				img.src = resp[k]
+				img.style.maxHeight = "64px"
+				divImg.appendChild(img)
+				divOneEmoji.appendChild(divImg)
+				
+				// emoji name
+				let divEmojiName = document.createElement("div")
+				divEmojiName.align = "center"
+				let spanEmojiName = document.createElement("span")
+				let emojiName = document.createTextNode(k)
+				spanEmojiName.appendChild(emojiName)
+				divEmojiName.appendChild(spanEmojiName)
+				divOneEmoji.appendChild(divEmojiName)
+				divEmojis.appendChild(divOneEmoji)
+			}
+		}
+		
+		emojiGet()
+	</script>
+</html>
